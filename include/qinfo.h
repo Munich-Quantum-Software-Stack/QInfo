@@ -49,28 +49,11 @@ typedef union QInfo_value_d
     char*   value_string;
 } QInfo_value;
 
-typedef struct QInfo_value_space_d
-{
-    QInfo_value value;
-    int         occupied;
-    int         type;
-    char        *name;
-} QInfo_value_space_t;
-
-typedef struct QInfo_impl_d
-{
-    int topic_space_size;
-    int topic_space_occupied;
-    QInfo_value_space_t *value_space;
-} QInfo_impl_t;
-
-typedef QInfo_impl_t *QInfo;
+typedef struct QInfo_impl_d *QInfo;
 
 typedef int  QInfo_topic;
 typedef int  QInfo_iterator;
 typedef int  QInfo_type;
-
-
 
 
 /*----------------------------------------*/
