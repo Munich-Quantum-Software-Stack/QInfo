@@ -9,7 +9,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/cmake")
 list(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}/cmake")
 
 include(GNUInstallDirs)
-include(CTest)
+#include(CTest)
 
 add_compile_options("-g")
 
