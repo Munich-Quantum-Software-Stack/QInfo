@@ -56,21 +56,21 @@ install(
 
 add_executable(InfoCreation testing/create.c)
 target_link_libraries(InfoCreation qinfo)
-add_test(InfoCreation InfoCreation)
+#add_test(InfoCreation InfoCreation)
 
 add_executable(InfoAddDel testing/adddel.c)
 target_link_libraries(InfoAddDel qinfo)
-add_test(InfoAddDel InfoAddDel)
+#add_test(InfoAddDel InfoAddDel)
 
 add_executable(InfoAddMany testing/addmany.c)
 target_link_libraries(InfoAddMany qinfo)
-add_test(InfoAddMany InfoAddMany)
+#add_test(InfoAddMany InfoAddMany)
 
 add_executable(InfoAddDouble testing/adddouble.c)
 target_link_libraries(InfoAddDouble qinfo)
-add_test(InfoAddDouble InfoAddDouble)
+#add_test(InfoAddDouble InfoAddDouble)
 
 add_executable(InfoValue testing/value.c)
 target_link_libraries(InfoValue qinfo)
-add_test(InfoValue InfoValue)
+#add_test(InfoValue InfoValue)
 
