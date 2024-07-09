@@ -1,3 +1,9 @@
+/*------------------------------------------------------------------------------
+Part of the MQSS Project, under the Apache License v2.0 with LLVM Exceptions.
+See https://llvm.org/LICENSE.txt for license information.
+SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+------------------------------------------------------------------------------*/
+
 #ifndef QINFO_H
 #define QINFO_H
 
@@ -62,7 +68,7 @@ typedef int  QInfo_type;
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
 int QInfo_create(QInfo *info);
 int QInfo_duplicate(QInfo info_in, QInfo *info_out);
 int QInfo_free(QInfo info);
@@ -80,4 +86,3 @@ int QInfo_topic_get(QInfo info, QInfo_topic topic, QInfo_value *val);
 #endif
 
 #endif
-
