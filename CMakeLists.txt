@@ -1,8 +1,8 @@
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Part of the MQSS Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # set required cmake version
 cmake_minimum_required(VERSION 3.19...3.30)
@@ -23,8 +23,10 @@ else()
   set(QINFO_MASTER_PROJECT OFF)
 endif()
 
-option(QINFO_INSTALL "Generate installation instructions for QInfo" ${QINFO_MASTER_PROJECT})
-option(BUILD_QINFO_TESTS "Also build tests for the QInfo project" ${QINFO_MASTER_PROJECT})
+option(QINFO_INSTALL "Generate installation instructions for QInfo"
+       ${QINFO_MASTER_PROJECT})
+option(BUILD_QINFO_TESTS "Also build tests for the QInfo project"
+       ${QINFO_MASTER_PROJECT})
 
 # enable organization of targets into folders
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -36,11 +38,12 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
       Release
       CACHE STRING "Choose the type of build." FORCE)
   # Set the possible values of build type for cmake-gui, ccmake
-  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel"
-                                               "RelWithDebInfo")
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release"
+                                               "MinSizeRel" "RelWithDebInfo")
 endif()
 
-# Generate compile_commands.json to make it easier to work with clang-based tools
+# Generate compile_commands.json to make it easier to work with clang-based
+# tools
 set(CMAKE_EXPORT_COMPILE_COMMANDS
     ON
     CACHE BOOL "Export compile commands" FORCE)

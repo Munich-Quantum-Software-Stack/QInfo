@@ -1,19 +1,23 @@
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 # Part of the MQSS Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
-#-------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 if(QINFO_INSTALL)
   include(GNUInstallDirs)
   set(QINFO_CONFIG_INSTALL_DIR "${CMAKE_INSTALL_DATADIR}/cmake/qinfo")
   set(QINFO_INCLUDE_INSTALL_DIR "${CMAKE_INSTALL_INCLUDEDIR}/qinfo")
   set(QINFO_TARGETS_EXPORT_NAME "qinfo-targets")
-  set(QINFO_CMAKE_CONFIG_TEMPLATE "${PROJECT_SOURCE_DIR}/cmake/qinfo-config.cmake.in")
+  set(QINFO_CMAKE_CONFIG_TEMPLATE
+      "${PROJECT_SOURCE_DIR}/cmake/qinfo-config.cmake.in")
   set(QINFO_CMAKE_CONFIG_DIR "${CMAKE_CURRENT_BINARY_DIR}")
-  set(QINFO_CMAKE_VERSION_CONFIG_FILE "${QINFO_CMAKE_CONFIG_DIR}/qinfo-config-version.cmake")
-  set(QINFO_CMAKE_PROJECT_CONFIG_FILE "${QINFO_CMAKE_CONFIG_DIR}/qinfo-config.cmake")
-  set(QINFO_CMAKE_PROJECT_TARGETS_FILE "${QINFO_CMAKE_CONFIG_DIR}/qinfo-targets.cmake")
+  set(QINFO_CMAKE_VERSION_CONFIG_FILE
+      "${QINFO_CMAKE_CONFIG_DIR}/qinfo-config-version.cmake")
+  set(QINFO_CMAKE_PROJECT_CONFIG_FILE
+      "${QINFO_CMAKE_CONFIG_DIR}/qinfo-config.cmake")
+  set(QINFO_CMAKE_PROJECT_TARGETS_FILE
+      "${QINFO_CMAKE_CONFIG_DIR}/qinfo-targets.cmake")
 endif()
 
 if(NOT TARGET project_warnings)
@@ -37,7 +41,8 @@ if(NOT TARGET qinfo)
   endif()
 
   # set include directories
-  target_include_directories(qinfo PUBLIC $<BUILD_INTERFACE:${QINFO_INCLUDE_BUILD_DIR}>)
+  target_include_directories(
+    qinfo PUBLIC $<BUILD_INTERFACE:${QINFO_INCLUDE_BUILD_DIR}>)
 
   # add warnings to the library
   target_link_libraries(qinfo PRIVATE qinfo::project_warnings)
@@ -90,7 +95,8 @@ if(QINFO_INSTALL)
     VERSION ${PROJECT_VERSION}
     COMPATIBILITY SameMinorVersion)
 
-  install(FILES ${QINFO_CMAKE_PROJECT_CONFIG_FILE} ${QINFO_CMAKE_VERSION_CONFIG_FILE}
+  install(FILES ${QINFO_CMAKE_PROJECT_CONFIG_FILE}
+                ${QINFO_CMAKE_VERSION_CONFIG_FILE}
           DESTINATION ${QINFO_CONFIG_INSTALL_DIR})
 
   install(
