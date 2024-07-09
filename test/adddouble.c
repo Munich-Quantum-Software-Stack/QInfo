@@ -12,7 +12,7 @@ int main(int agrc, char** argv)
     QInfo info;
     QInfo_topic topic1,topic2;
     int err;
-    
+
     err=QInfo_create(&info);
     CHECK_ERR(err,"During Create");
 
@@ -21,17 +21,15 @@ int main(int agrc, char** argv)
 
     err=QInfo_topic_query(info, "TOPIC1", &topic2);
     CHECK_ERR(err,"During Querying Topic");
-    
+
     if (topic1!=topic2)
         CHECK_ERR(-1,"Different Topics");
-    
+
     err=QInfo_topic_remove(info,topic1);
     CHECK_ERR(err,"During Removing Topic");
-    
+
     err=QInfo_free(info);
     CHECK_ERR(err,"During Free");
 
     return 0;
 }
-
-

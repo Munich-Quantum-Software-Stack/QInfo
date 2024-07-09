@@ -3,7 +3,7 @@
 #include <string.h>
 
 #include <qinfo.h>
-    
+
 
 /*----------------------------------------*/
 /* Type Concretizations  */
@@ -36,21 +36,21 @@ typedef struct QInfo_impl_d
 int QInfo_create(QInfo *info)
 {
     int i;
-    
+
     *info=(QInfo_impl_t*) malloc(sizeof(QInfo_impl_t));
     if (*info==NULL)
         return QINFO_ERROR_OUTOFMEM;
-    
+
     (*info)->topic_space_size=QINFO_INTERNAL_SPACEGRANULARITY;
     (*info)->topic_space_occupied=0;
-    
+
     (*info)->value_space=(QInfo_value_space_t*) malloc(sizeof(QInfo_value_space_t)*(*info)->topic_space_size);
     if ((*info)->value_space==NULL)
     {
         free(*info);
         return QINFO_ERROR_OUTOFMEM;
     }
-    
+
     for (i=0; i<(*info)->topic_space_size; i++)
     {
         (*info)->value_space[i].occupied=0;
@@ -58,7 +58,7 @@ int QInfo_create(QInfo *info)
         (*info)->value_space[i].type=QINFO_TYPE_INT;
         (*info)->value_space[i].value.value_int=0;
     }
-        
+
     return QINFO_SUCCESS;
 }
 
@@ -72,21 +72,21 @@ int QInfo_create(QInfo *info)
 int QInfo_duplicate(QInfo info_in, QInfo *info_out)
 {
     int i;
-    
+
     *info_out=(QInfo_impl_t*) malloc(sizeof(QInfo_impl_t));
     if (*info_out==NULL)
         return QINFO_ERROR_OUTOFMEM;
-    
+
     (*info_out)->topic_space_size=info_in->topic_space_size;
     (*info_out)->topic_space_occupied=info_in->topic_space_occupied;
-    
+
     (*info_out)->value_space=(QInfo_value_space_t*) malloc(sizeof(QInfo_value_space_t)*(*info_out)->topic_space_size);
     if ((*info_out)->value_space==NULL)
     {
         free(*info_out);
         return QINFO_ERROR_OUTOFMEM;
     }
-    
+
     for (i=0; i<(*info_out)->topic_space_size; i++)
     {
         if (info_in->value_space[i].occupied)
@@ -120,7 +120,7 @@ int QInfo_duplicate(QInfo info_in, QInfo *info_out)
             (*info_out)->value_space[i].value.value_int=0;
         }
     }
-    
+
     return QINFO_SUCCESS;
 }
 
@@ -134,7 +134,7 @@ int QInfo_duplicate(QInfo info_in, QInfo *info_out)
 int QInfo_free(QInfo info)
 {
     int i;
-    
+
     for (i=0; i<info->topic_space_size; i++)
     {
         if (info->value_space[i].occupied)
@@ -146,10 +146,10 @@ int QInfo_free(QInfo info)
             }
         }
     }
-    
+
     free(info->value_space);
     free(info);
-    
+
     return QINFO_SUCCESS;
 }
 
@@ -168,9 +168,9 @@ int QInfo_free(QInfo info)
 int QInfo_topic_add(QInfo info, char *topicname, QInfo_type type, QInfo_topic *topic)
 {
     int i, old_size;
-    
+
     /* Check if topic exists */
-    
+
     for (i=0; i<info->topic_space_size; i++)
     {
         if (info->value_space[i].occupied)
@@ -179,9 +179,9 @@ int QInfo_topic_add(QInfo info, char *topicname, QInfo_type type, QInfo_topic *t
                 return QINFO_ERROR_TOPICEXISTS;
         }
     }
-    
+
     /* Check if there is space */
-    
+
     if (info->topic_space_size==info->topic_space_occupied)
     {
         /* Need more value space */
@@ -190,7 +190,7 @@ int QInfo_topic_add(QInfo info, char *topicname, QInfo_type type, QInfo_topic *t
         info->value_space=(QInfo_value_space_t*) realloc(info->value_space,sizeof(QInfo_value_space_t)*(info->topic_space_size));
         if (info->value_space==NULL)
             return QINFO_ERROR_OUTOFMEM;
-        
+
         for (i=old_size; i<info->topic_space_size; i++)
         {
             info->value_space[i].occupied=0;
@@ -199,9 +199,9 @@ int QInfo_topic_add(QInfo info, char *topicname, QInfo_type type, QInfo_topic *t
             info->value_space[i].value.value_int=0;
         }
     }
-        
+
     /* Find empty slot and occupy it */
-  
+
     for (i=0; i<info->topic_space_size; i++)
     {
         if (info->value_space[i].occupied==0)
@@ -218,10 +218,10 @@ int QInfo_topic_add(QInfo info, char *topicname, QInfo_type type, QInfo_topic *t
             return QINFO_SUCCESS;
         }
     }
-    
+
     /* Somehow we had no space */
     /* This should never happen */
-    
+
     return QINFO_ERROR_FATAL;
 }
 
@@ -261,9 +261,9 @@ int QInfo_topic_remove(QInfo info, QInfo_topic topic)
 int QInfo_topic_query(QInfo info, char *topicname, QInfo_topic *topic)
 {
     int i;
-    
+
     /* Check if topic exists */
-    
+
     for (i=0; i<info->topic_space_size; i++)
     {
         if (info->value_space[i].occupied)

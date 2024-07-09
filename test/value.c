@@ -14,7 +14,7 @@ int check_info(QInfo info, int val1, float val2, char *val3)
     QInfo_type type;
     int counter,err;
     char *topicname;
-    
+
     err=QInfo_topic_startiterator(info,&iter);
     CHECK_ERR(err,"During Iterator Start");
 
@@ -24,36 +24,36 @@ int check_info(QInfo info, int val1, float val2, char *val3)
         if (err!=QINFO_WARN_NOTOPIC)
         {
             CHECK_ERR(err, "During Iterator");
-            
+
             err=QInfo_topic_gettype(info,topic,&type);
             CHECK_ERR(err,"During Get Type");
-            
+
             err=QInfo_topic_get(info,topic,&val);
             CHECK_ERR(err,"During Get Value");
 
             if (strcmp(topicname,"TOPIC_INT")==0)
             {
                 printf("VALUE %i should be %i\n",val.value_int,val1);
-                
+
                if (type!=QINFO_TYPE_INT)
                     CHECK_ERR(-1,"Wrong Int Type");
                 if (val.value_int!=val1)
                     CHECK_ERR(-1,"Wrong Int Value");
-                
+
                 counter++;
             }
-            
+
             if (strcmp(topicname,"TOPIC_FLOAT")==0)
             {
                 printf("VALUE %f should be %f\n",val.value_float,val2);
-                
+
                 if (type!=QINFO_TYPE_FLOAT)
                     CHECK_ERR(-1,"Wrong Float Type");
                 if (val.value_float!=val2)
                     CHECK_ERR(-1,"Wrong Float Value");
                 counter++;
             }
-           
+
             if (strcmp(topicname,"TOPIC_STRING")==0)
             {
                 printf("VALUE %s should be %s\n",val.value_string,val3);
@@ -67,10 +67,10 @@ int check_info(QInfo info, int val1, float val2, char *val3)
             free(topicname);
         }
     } while (err!=QINFO_WARN_NOTOPIC);
-    
+
     if (counter!=3)
         CHECK_ERR(-1,"Not all topics found");
-    
+
     return 0;
 }
 
@@ -80,7 +80,7 @@ int main(int agrc, char** argv)
     QInfo_topic topic1,topic2,topic3;
     QInfo_value val;
     int err;
-    
+
     err=QInfo_create(&info);
     CHECK_ERR(err,"During Create");
 
@@ -125,18 +125,16 @@ int main(int agrc, char** argv)
 
     err=QInfo_free(info);
     CHECK_ERR(err,"During Free1");
-    
+
     val.value_int=-4;
     err=QInfo_topic_set(info2,topic1,&val);
     CHECK_ERR(err,"During Set Value 5");
 
     err=check_info(info2, -4, 5.52, "My New String");
     CHECK_ERR(err,"During Check 5");
-    
+
     err=QInfo_free(info2);
     CHECK_ERR(err,"During Free2");
 
     return 0;
 }
-
-

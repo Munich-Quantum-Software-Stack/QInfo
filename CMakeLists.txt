@@ -1,74 +1,56 @@
-cmake_minimum_required(VERSION 3.9)
+# set required cmake version
+cmake_minimum_required(VERSION 3.19...3.30)
 
 project(
   qinfo
-  VERSION 0.1
+  LANGUAGES C
+  VERSION 0.2.0
   DESCRIPTION "QInfo Library")
 
-if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
-  set(CMAKE_INSTALL_PREFIX
-      ${CMAKE_CURRENT_SOURCE_DIR}/../install
-      CACHE PATH "..." FORCE)
+# make scripts available to cmake
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+# check if this is the master project or used via add_subdirectory
+if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+  set(QINFO_MASTER_PROJECT ON)
+else()
+  set(QINFO_MASTER_PROJECT OFF)
 endif()
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_INSTALL_PREFIX}/cmake")
-list(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}/cmake")
 
-include(GNUInstallDirs)
-include(CTest)
+option(QINFO_INSTALL "Generate installation instructions for QInfo" ${QINFO_MASTER_PROJECT})
+option(BUILD_QINFO_TESTS "Also build tests for the QInfo project" ${QINFO_MASTER_PROJECT})
 
-add_compile_options("-g")
+# enable organization of targets into folders
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
-add_library(qinfo SHARED src/qinfo.c)
+# Set a default build type if none was specified
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Setting build type to 'Release' as none was specified.")
+  set(CMAKE_BUILD_TYPE
+      Release
+      CACHE STRING "Choose the type of build." FORCE)
+  # Set the possible values of build type for cmake-gui, ccmake
+  set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel"
+                                               "RelWithDebInfo")
+endif()
 
-set_target_properties(
-  qinfo
-  PROPERTIES VERSION ${PROJECT_VERSION}
-             SOVERSION ${PROJECT_VERSION_MAJOR}
-             PUBLIC_HEADER include/qinfo.h)
+# Generate compile_commands.json to make it easier to work with clang-based tools
+set(CMAKE_EXPORT_COMPILE_COMMANDS
+    ON
+    CACHE BOOL "Export compile commands" FORCE)
 
-# configure_file(qinfo.pc.in qinfo.pc @ONLY)
+# Require C standard
+set_property(GLOBAL PROPERTY CMAKE_C_STANDARD_REQUIRED ON)
+set_property(GLOBAL PROPERTY C_EXTENSIONS OFF)
 
-# target_include_directories(qinfo PUBLIC include)
+# set the include directory for the build tree
+set(QINFO_INCLUDE_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/qinfo")
 
-target_include_directories(qinfo PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-                                        $<INSTALL_INTERFACE:include>)
+# add main library code
+add_subdirectory(src)
 
-install(
-  TARGETS qinfo
-  EXPORT qinfoConfig
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-
-export(
-  TARGETS qinfo
-  NAMESPACE qinfo::
-  FILE "${CMAKE_CURRENT_BINARY_DIR}/qinfoConfig.cmake")
-
-install(
-  EXPORT qinfoConfig
-  FILE qinfoConfig.cmake
-  DESTINATION "${CMAKE_INSTALL_PREFIX}/cmake"
-  NAMESPACE qinfo::)
-
-# install(FILES ${CMAKE_BINARY_DIR}/mylib.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
-
-add_executable(InfoCreation testing/create.c)
-target_link_libraries(InfoCreation qinfo)
-add_test(InfoCreation InfoCreation)
-
-add_executable(InfoAddDel testing/adddel.c)
-target_link_libraries(InfoAddDel qinfo)
-add_test(InfoAddDel InfoAddDel)
-
-add_executable(InfoAddMany testing/addmany.c)
-target_link_libraries(InfoAddMany qinfo)
-add_test(InfoAddMany InfoAddMany)
-
-add_executable(InfoAddDouble testing/adddouble.c)
-target_link_libraries(InfoAddDouble qinfo)
-add_test(InfoAddDouble InfoAddDouble)
-
-add_executable(InfoValue testing/value.c)
-target_link_libraries(InfoValue qinfo)
-add_test(InfoValue InfoValue)
+# add test code
+if(BUILD_QINFO_TESTS)
+  enable_testing()
+  add_subdirectory(test)
+endif()
