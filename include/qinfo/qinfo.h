@@ -4,8 +4,7 @@ See https://llvm.org/LICENSE.txt for license information.
 SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 ------------------------------------------------------------------------------*/
 
-#ifndef QINFO_H
-#define QINFO_H
+#pragma once
 
 /*----------------------------------------*/
 /* QInfo Constants for API usage*/
@@ -83,6 +82,4 @@ int QInfo_topic_get(QInfo info, QInfo_topic topic, QInfo_value *val);
 
 #ifdef __cplusplus
 } // extern "C"
-#endif
-
 #endif
