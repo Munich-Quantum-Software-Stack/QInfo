@@ -12,6 +12,13 @@ ci:
   autofix_commit_msg: "🎨 pre-commit fixes"
 
 repos:
+  # Clang-format the C++ part of the code base automatically
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev:  v18.1.8
+    hooks:
+      - id: clang-format
+        types_or: [ c++, c, cuda ]
+
   # CMake format the CMakeLists.txt files
   - repo: https://github.com/cheshirekow/cmake-format-precommit
     rev: v0.6.13
