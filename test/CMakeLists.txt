@@ -4,22 +4,24 @@
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 # ------------------------------------------------------------------------------
 
-add_executable(InfoCreation create.c)
-target_link_libraries(InfoCreation qinfo::qinfo)
-add_test(InfoCreation InfoCreation)
+if(TARGET qinfo_test)
+  return()
+endif()
 
-add_executable(InfoAddDel adddel.c)
-target_link_libraries(InfoAddDel qinfo::qinfo)
-add_test(InfoAddDel InfoAddDel)
+# add CXX language support
+enable_language(CXX)
 
-add_executable(InfoAddMany addmany.c)
-target_link_libraries(InfoAddMany qinfo::qinfo)
-add_test(InfoAddMany InfoAddMany)
+# create an executable in which the tests will be stored
+add_executable(qinfo_test test_qinfo.cpp)
 
-add_executable(InfoAddDouble adddouble.c)
-target_link_libraries(InfoAddDouble qinfo::qinfo)
-add_test(InfoAddDouble InfoAddDouble)
+# link the Google test infrastructure and a default main function to the test
+# executable.
+target_link_libraries(qinfo_test PRIVATE gtest_main qinfo::qinfo
+                                         qinfo::project_warnings)
 
-add_executable(InfoValue value.c)
-target_link_libraries(InfoValue qinfo::qinfo)
-add_test(InfoValue InfoValue)
+# discover tests
+gtest_discover_tests(
+  qinfo_test
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+             DISCOVERY_TIMEOUT 60)

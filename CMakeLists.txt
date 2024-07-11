@@ -52,6 +52,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS
 set_property(GLOBAL PROPERTY CMAKE_C_STANDARD_REQUIRED ON)
 set_property(GLOBAL PROPERTY C_EXTENSIONS OFF)
 
+include(cmake/ExternalDependencies.cmake)
+
 # set the include directory for the build tree
 set(QINFO_INCLUDE_BUILD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include/qinfo")
 
@@ -61,5 +63,6 @@ add_subdirectory(src)
 # add test code
 if(BUILD_QINFO_TESTS)
   enable_testing()
+  include(GoogleTest)
   add_subdirectory(test)
 endif()
