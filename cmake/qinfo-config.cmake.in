@@ -1,0 +1,22 @@
+# ------------------------------------------------------------------------------
+# Part of the MQSS Project, under the Apache License v2.0 with LLVM Exceptions.
+# See https://llvm.org/LICENSE.txt for license information.
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+# ------------------------------------------------------------------------------
+
+# A CMake config file for the library, to be used by external projects
+
+@PACKAGE_INIT@
+
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}")
+
+if(TARGET qinfo::qinfo)
+  return()
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/CompilerWarnings.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/qinfo-targets.cmake")
+
+if(NOT qinfo_FIND_QUIETLY)
+  message(STATUS "Found qinfo version ${qinfo_VERSION}")
+endif()
