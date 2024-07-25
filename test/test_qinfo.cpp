@@ -6,7 +6,6 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include "qinfo.h"
 
-#include <array>
 #include <cstdint>
 #include <cstdlib>
 #include <gtest/gtest.h>
