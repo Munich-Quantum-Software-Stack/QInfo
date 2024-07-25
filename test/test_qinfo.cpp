@@ -27,7 +27,8 @@ protected:
 
 TEST_F(QInfoTest, addAndDelete) {
   QInfo_index index{};
-  ASSERT_TRUE(QInfo_is_Success(QInfo_add(info, "test", QINFO_TYPE_INT, &index)))
+  ASSERT_TRUE(
+      QInfo_is_Success(QInfo_add(info, "test", QINFO_TYPE_INT32, &index)))
       << "Could not add key";
 
   char *key{};
@@ -51,7 +52,7 @@ TEST_F(QInfoTest, addManyEntries) {
     for (int j = 0; j < inner; ++j) {
       const std::string key = "key_" + std::to_string(j);
       ASSERT_TRUE(QInfo_is_Success(
-          QInfo_add(info, key.c_str(), QINFO_TYPE_INT, &index)))
+          QInfo_add(info, key.c_str(), QINFO_TYPE_INT32, &index)))
           << "Could not add key";
     }
     for (int j = 0; j < inner; ++j) {
@@ -68,7 +69,8 @@ TEST_F(QInfoTest, addManyEntries) {
 
 TEST_F(QInfoTest, intValues) {
   QInfo_index index{};
-  ASSERT_TRUE(QInfo_is_Success(QInfo_add(info, "int", QINFO_TYPE_INT, &index)))
+  ASSERT_TRUE(
+      QInfo_is_Success(QInfo_add(info, "int", QINFO_TYPE_INT32, &index)))
       << "Could not add key";
 
   QInfo_index index2{};
@@ -79,18 +81,18 @@ TEST_F(QInfoTest, intValues) {
   QINFO_TYPE type{};
   ASSERT_TRUE(QInfo_is_Success(QInfo_get_type(info, index, &type)))
       << "Could not get type";
-  ASSERT_EQ(type, QINFO_TYPE_INT) << "Wrong type";
+  ASSERT_EQ(type, QINFO_TYPE_INT32) << "Wrong type";
 
   const int value = 42;
-  ASSERT_TRUE(QInfo_is_Success(QInfo_set_i(info, index, value)))
+  ASSERT_TRUE(QInfo_is_Success(QInfo_set_i32(info, index, value)))
       << "Could not set int value";
 
   int value2{};
-  ASSERT_TRUE(QInfo_is_Success(QInfo_get_val_i(info, index, &value2)))
+  ASSERT_TRUE(QInfo_is_Success(QInfo_get_val_i32(info, index, &value2)))
       << "Could not get int value";
   ASSERT_EQ(value, value2) << "Values do not match";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_l(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i64(info, index, nullptr)))
       << "Should not be able to get long value";
 
   ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_f(info, index, nullptr)))
@@ -106,7 +108,7 @@ TEST_F(QInfoTest, intValues) {
 TEST_F(QInfoTest, longValues) {
   QInfo_index index{};
   ASSERT_TRUE(
-      QInfo_is_Success(QInfo_add(info, "long", QINFO_TYPE_LONG, &index)))
+      QInfo_is_Success(QInfo_add(info, "long", QINFO_TYPE_INT64, &index)))
       << "Could not add key";
 
   QInfo_index index2{};
@@ -117,18 +119,18 @@ TEST_F(QInfoTest, longValues) {
   QINFO_TYPE type{};
   ASSERT_TRUE(QInfo_is_Success(QInfo_get_type(info, index, &type)))
       << "Could not get type";
-  ASSERT_EQ(type, QINFO_TYPE_LONG) << "Wrong type";
+  ASSERT_EQ(type, QINFO_TYPE_INT64) << "Wrong type";
 
-  const int64_t value = 42L;
-  ASSERT_TRUE(QInfo_is_Success(QInfo_set_l(info, index, value)))
+  const int64_t value = 42LL;
+  ASSERT_TRUE(QInfo_is_Success(QInfo_set_i64(info, index, value)))
       << "Could not set long value";
 
   int64_t value2{};
-  ASSERT_TRUE(QInfo_is_Success(QInfo_get_val_l(info, index, &value2)))
+  ASSERT_TRUE(QInfo_is_Success(QInfo_get_val_i64(info, index, &value2)))
       << "Could not get long value";
   ASSERT_EQ(value, value2) << "Values do not match";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i32(info, index, nullptr)))
       << "Should not be able to get int value";
 
   ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_f(info, index, nullptr)))
@@ -166,10 +168,10 @@ TEST_F(QInfoTest, floatValues) {
       << "Could not get float value";
   ASSERT_EQ(value, value2) << "Values do not match";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i32(info, index, nullptr)))
       << "Should not be able to get int value";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_l(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i64(info, index, nullptr)))
       << "Should not be able to get long value";
 
   ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_d(info, index, nullptr)))
@@ -204,10 +206,10 @@ TEST_F(QInfoTest, doubleValues) {
       << "Could not get double value";
   ASSERT_EQ(value, value2) << "Values do not match";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i32(info, index, nullptr)))
       << "Should not be able to get int value";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_l(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i64(info, index, nullptr)))
       << "Should not be able to get long value";
 
   ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_f(info, index, nullptr)))
@@ -243,10 +245,10 @@ TEST_F(QInfoTest, stringValues) {
   ASSERT_STREQ(str.c_str(), value2) << "Values do not match";
   free(value2); // NOLINT(*-owning-memory, *-no-malloc)
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i32(info, index, nullptr)))
       << "Should not be able to get int value";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_l(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i64(info, index, nullptr)))
       << "Should not be able to get long value";
 
   ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_f(info, index, nullptr)))
@@ -259,9 +261,10 @@ TEST_F(QInfoTest, stringValues) {
 TEST_F(QInfoTest, duplicate) {
   const int value = 42;
   QInfo_index index{};
-  ASSERT_TRUE(QInfo_is_Success(QInfo_add(info, "int", QINFO_TYPE_INT, &index)))
+  ASSERT_TRUE(
+      QInfo_is_Success(QInfo_add(info, "int", QINFO_TYPE_INT32, &index)))
       << "Could not add key";
-  ASSERT_TRUE(QInfo_is_Success(QInfo_set_i(info, index, value)))
+  ASSERT_TRUE(QInfo_is_Success(QInfo_set_i32(info, index, value)))
       << "Could not set int value";
 
   ASSERT_TRUE(
@@ -279,7 +282,7 @@ TEST_F(QInfoTest, duplicate) {
   ASSERT_TRUE(QInfo_is_Success(QInfo_query(info2, "int", &index2)))
       << "Could not query key";
   int value2{};
-  ASSERT_TRUE(QInfo_is_Success(QInfo_get_val_i(info2, index2, &value2)))
+  ASSERT_TRUE(QInfo_is_Success(QInfo_get_val_i32(info2, index2, &value2)))
       << "Could not get int value";
   ASSERT_EQ(value, value2) << "Values do not match";
 
@@ -314,10 +317,11 @@ TEST_F(QInfoTest, stringRemove) {
 
 TEST_F(QInfoTest, errorOnExistingKey) {
   QInfo_index index{};
-  ASSERT_TRUE(QInfo_is_Success(QInfo_add(info, "test", QINFO_TYPE_INT, &index)))
+  ASSERT_TRUE(
+      QInfo_is_Success(QInfo_add(info, "test", QINFO_TYPE_INT32, &index)))
       << "Could not add key";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_add(info, "test", QINFO_TYPE_INT, &index)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_add(info, "test", QINFO_TYPE_INT32, &index)))
       << "Should not be able to add existing key";
 }
 
@@ -333,10 +337,10 @@ TEST_F(QInfoTest, errOutOfBounds) {
   ASSERT_TRUE(QInfo_is_Error(QInfo_get_key(info, index, nullptr)))
       << "Should not be able to get key of non-existing key";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i32(info, index, nullptr)))
       << "Should not be able to get value of non-existing key";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_l(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_i64(info, index, nullptr)))
       << "Should not be able to get value of non-existing key";
 
   ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_f(info, index, nullptr)))
@@ -348,10 +352,10 @@ TEST_F(QInfoTest, errOutOfBounds) {
   ASSERT_TRUE(QInfo_is_Error(QInfo_get_val_c(info, index, nullptr)))
       << "Should not be able to get value of non-existing key";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_set_i(info, index, 0)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_set_i32(info, index, 0)))
       << "Should not be able to set value of non-existing key";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_set_l(info, index, 0)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_set_i64(info, index, 0)))
       << "Should not be able to set value of non-existing key";
 
   ASSERT_TRUE(QInfo_is_Error(QInfo_set_f(info, index, 0)))
@@ -376,10 +380,10 @@ TEST_F(QInfoTest, warnNotOccupied) {
   ASSERT_TRUE(QInfo_is_Warning(QInfo_get_key(info, index, nullptr)))
       << "Should not be able to get key of non-existing key";
 
-  ASSERT_TRUE(QInfo_is_Warning(QInfo_get_val_i(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Warning(QInfo_get_val_i32(info, index, nullptr)))
       << "Should not be able to get value of non-existing key";
 
-  ASSERT_TRUE(QInfo_is_Warning(QInfo_get_val_l(info, index, nullptr)))
+  ASSERT_TRUE(QInfo_is_Warning(QInfo_get_val_i64(info, index, nullptr)))
       << "Should not be able to get value of non-existing key";
 
   ASSERT_TRUE(QInfo_is_Warning(QInfo_get_val_f(info, index, nullptr)))
@@ -391,10 +395,10 @@ TEST_F(QInfoTest, warnNotOccupied) {
   ASSERT_TRUE(QInfo_is_Warning(QInfo_get_val_c(info, index, nullptr)))
       << "Should not be able to get value of non-existing key";
 
-  ASSERT_TRUE(QInfo_is_Warning(QInfo_set_i(info, index, 0)))
+  ASSERT_TRUE(QInfo_is_Warning(QInfo_set_i32(info, index, 0)))
       << "Should not be able to set value of non-existing key";
 
-  ASSERT_TRUE(QInfo_is_Warning(QInfo_set_l(info, index, 0)))
+  ASSERT_TRUE(QInfo_is_Warning(QInfo_set_i64(info, index, 0)))
       << "Should not be able to set value of non-existing key";
 
   ASSERT_TRUE(QInfo_is_Warning(QInfo_set_f(info, index, 0)))
@@ -415,10 +419,11 @@ TEST_F(QInfoTest, warnQueryNotFound) {
 
 TEST_F(QInfoTest, errorInvalidType) {
   QInfo_index index{};
-  ASSERT_TRUE(QInfo_is_Success(QInfo_add(info, "test", QINFO_TYPE_INT, &index)))
+  ASSERT_TRUE(
+      QInfo_is_Success(QInfo_add(info, "test", QINFO_TYPE_INT32, &index)))
       << "Could not add key";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_set_l(info, index, 0)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_set_i64(info, index, 0)))
       << "Should not be able to set long value for int key";
 
   ASSERT_TRUE(QInfo_is_Error(QInfo_set_f(info, index, 0)))
@@ -432,10 +437,10 @@ TEST_F(QInfoTest, errorInvalidType) {
 
   QInfo_index index2{};
   ASSERT_TRUE(
-      QInfo_is_Success(QInfo_add(info, "test2", QINFO_TYPE_LONG, &index2)))
+      QInfo_is_Success(QInfo_add(info, "test2", QINFO_TYPE_INT64, &index2)))
       << "Could not add key";
 
-  ASSERT_TRUE(QInfo_is_Error(QInfo_set_i(info, index2, 0)))
+  ASSERT_TRUE(QInfo_is_Error(QInfo_set_i32(info, index2, 0)))
       << "Should not be able to set int value for long key";
 }
 
@@ -443,10 +448,10 @@ TEST_F(QInfoTest, iteration) {
   for (int i = 0; i < 10; ++i) {
     const std::string key = "key_" + std::to_string(i);
     QInfo_index index{};
-    ASSERT_TRUE(
-        QInfo_is_Success(QInfo_add(info, key.c_str(), QINFO_TYPE_INT, &index)))
+    ASSERT_TRUE(QInfo_is_Success(
+        QInfo_add(info, key.c_str(), QINFO_TYPE_INT32, &index)))
         << "Could not add key";
-    ASSERT_TRUE(QInfo_is_Success(QInfo_set_i(info, index, i)))
+    ASSERT_TRUE(QInfo_is_Success(QInfo_set_i32(info, index, i)))
         << "Could not set int value";
   }
 
@@ -456,7 +461,7 @@ TEST_F(QInfoTest, iteration) {
     ASSERT_TRUE(QInfo_is_Success(QInfo_get_key(info, i, &key)))
         << "Could not get key";
     int value{};
-    ASSERT_TRUE(QInfo_is_Success(QInfo_get_val_i(info, i, &value)))
+    ASSERT_TRUE(QInfo_is_Success(QInfo_get_val_i32(info, i, &value)))
         << "Could not get int value";
     ASSERT_EQ(value, i) << "Values do not match";
     free(key); // NOLINT(*-owning-memory, *-no-malloc)

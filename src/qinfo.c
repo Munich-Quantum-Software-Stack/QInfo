@@ -11,6 +11,7 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #include "qinfo.h"
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -24,8 +25,8 @@ const int QINFO_INTERNAL_SPACEGRANULARITY = 10;
  * @details This union is used to store the value for a key in a QInfo object.
  */
 typedef union QInfo_value_d {
-  int value_int;
-  long value_long;
+  int32_t value_i32;
+  int64_t value_i64;
   float value_float;
   double value_double;
   char *value_string;
@@ -70,8 +71,8 @@ int QInfo_create(QInfo *info) {
   for (int i = 0; i < (*info)->size; ++i) {
     (*info)->value_space[i].occupied = 0;
     (*info)->value_space[i].name = NULL;
-    (*info)->value_space[i].type = QINFO_TYPE_INT;
-    (*info)->value_space[i].value.value_int = 0;
+    (*info)->value_space[i].type = QINFO_TYPE_INT32;
+    (*info)->value_space[i].value.value_i32 = 0;
   }
 
   return QINFO_SUCCESS;
@@ -96,8 +97,8 @@ int QInfo_duplicate(QInfo info_in, QInfo *info_out) {
   for (int i = 0; i < (*info_out)->size; ++i) {
     if (!info_in->value_space[i].occupied) {
       (*info_out)->value_space[i].name = NULL;
-      (*info_out)->value_space[i].type = QINFO_TYPE_INT;
-      (*info_out)->value_space[i].value.value_int = 0;
+      (*info_out)->value_space[i].type = QINFO_TYPE_INT32;
+      (*info_out)->value_space[i].value.value_i32 = 0;
       continue;
     }
 
@@ -162,8 +163,8 @@ int QInfo_add(QInfo info, const char *key, const enum QINFO_TYPE type,
     for (int i = old_size; i < info->size; ++i) {
       info->value_space[i].occupied = 0;
       info->value_space[i].name = NULL;
-      info->value_space[i].type = QINFO_TYPE_INT;
-      info->value_space[i].value.value_int = 0;
+      info->value_space[i].type = QINFO_TYPE_INT32;
+      info->value_space[i].value.value_i32 = 0;
     }
   }
 
@@ -216,8 +217,8 @@ int QInfo_remove(QInfo info, const QInfo_index index) {
 
   info->value_space[index].occupied = 0;
   info->value_space[index].name = NULL;
-  info->value_space[index].type = QINFO_TYPE_INT;
-  info->value_space[index].value.value_int = 0;
+  info->value_space[index].type = QINFO_TYPE_INT32;
+  info->value_space[index].value.value_i32 = 0;
   info->num_occupied--;
   return QINFO_SUCCESS;
 }
@@ -257,31 +258,31 @@ int QInfo_get_type(QInfo info, const QInfo_index index, enum QINFO_TYPE *type) {
   return QINFO_SUCCESS;
 }
 
-int QInfo_get_val_i(QInfo info, const QInfo_index index, int *val) {
+int QInfo_get_val_i32(QInfo info, const QInfo_index index, int32_t *val) {
   const int err = Check_index(info, index);
   if (!QInfo_is_Success(err)) {
     return err;
   }
 
-  if (info->value_space[index].type != QINFO_TYPE_INT) {
+  if (info->value_space[index].type != QINFO_TYPE_INT32) {
     return QINFO_ERROR_INVALIDTYPE;
   }
 
-  *val = info->value_space[index].value.value_int;
+  *val = info->value_space[index].value.value_i32;
   return QINFO_SUCCESS;
 }
 
-int QInfo_get_val_l(QInfo info, const QInfo_index index, long *val) {
+int QInfo_get_val_i64(QInfo info, const QInfo_index index, int64_t *val) {
   const int err = Check_index(info, index);
   if (!QInfo_is_Success(err)) {
     return err;
   }
 
-  if (info->value_space[index].type != QINFO_TYPE_LONG) {
+  if (info->value_space[index].type != QINFO_TYPE_INT64) {
     return QINFO_ERROR_INVALIDTYPE;
   }
 
-  *val = info->value_space[index].value.value_long;
+  *val = info->value_space[index].value.value_i64;
   return QINFO_SUCCESS;
 }
 
@@ -331,31 +332,31 @@ int QInfo_get_val_c(QInfo info, const QInfo_index index, char **val) {
   return QINFO_SUCCESS;
 }
 
-int QInfo_set_i(QInfo info, const QInfo_index index, int val) {
+int QInfo_set_i32(QInfo info, const QInfo_index index, int32_t val) {
   const int err = Check_index(info, index);
   if (!QInfo_is_Success(err)) {
     return err;
   }
 
-  if (info->value_space[index].type != QINFO_TYPE_INT) {
+  if (info->value_space[index].type != QINFO_TYPE_INT32) {
     return QINFO_ERROR_INVALIDTYPE;
   }
 
-  info->value_space[index].value.value_int = val;
+  info->value_space[index].value.value_i32 = val;
   return QINFO_SUCCESS;
 }
 
-int QInfo_set_l(QInfo info, const QInfo_index index, long val) {
+int QInfo_set_i64(QInfo info, const QInfo_index index, int64_t val) {
   const int err = Check_index(info, index);
   if (!QInfo_is_Success(err)) {
     return err;
   }
 
-  if (info->value_space[index].type != QINFO_TYPE_LONG) {
+  if (info->value_space[index].type != QINFO_TYPE_INT64) {
     return QINFO_ERROR_INVALIDTYPE;
   }
 
-  info->value_space[index].value.value_long = val;
+  info->value_space[index].value.value_i64 = val;
   return QINFO_SUCCESS;
 }
 

@@ -11,6 +11,8 @@ SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 
 #pragma once
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -57,8 +59,8 @@ inline int QInfo_is_Error(const int err) { return err < QINFO_SUCCESS; }
  * @brief Types for values stored in a QInfo object.
  */
 enum QINFO_TYPE {
-  QINFO_TYPE_INT = 0,
-  QINFO_TYPE_LONG = 1,
+  QINFO_TYPE_INT32 = 0,
+  QINFO_TYPE_INT64 = 1,
   QINFO_TYPE_FLOAT = 2,
   QINFO_TYPE_DOUBLE = 3,
   QINFO_TYPE_STRING = 4
@@ -181,7 +183,7 @@ int QInfo_get_type(QInfo info, QInfo_index index, enum QINFO_TYPE *type);
  * @param[out] val Value stored at the index @p index.
  * @return QINFO_SUCCESS on success, an error code otherwise.
  */
-int QInfo_get_val_i(QInfo info, QInfo_index index, int *val);
+int QInfo_get_val_i32(QInfo info, QInfo_index index, int32_t *val);
 
 /**
  * @brief Gets the long value stored at the index @p index in @p info.
@@ -190,7 +192,7 @@ int QInfo_get_val_i(QInfo info, QInfo_index index, int *val);
  * @param[out] val Value stored at the index @p index.
  * @return QINFO_SUCCESS on success, an error code otherwise.
  */
-int QInfo_get_val_l(QInfo info, QInfo_index index, long *val);
+int QInfo_get_val_i64(QInfo info, QInfo_index index, int64_t *val);
 
 /**
  * @brief Gets the float value stored at the index @p index in @p info.
@@ -227,7 +229,7 @@ int QInfo_get_val_c(QInfo info, QInfo_index index, char **val);
  * @param[in] val Value to set.
  * @return QINFO_SUCCESS on success, an error code otherwise.
  */
-int QInfo_set_i(QInfo info, QInfo_index index, int val);
+int QInfo_set_i32(QInfo info, QInfo_index index, int32_t val);
 
 /**
  * @brief Sets the long value stored at the index @p index in @p info.
@@ -236,7 +238,7 @@ int QInfo_set_i(QInfo info, QInfo_index index, int val);
  * @param[in] val Value to set.
  * @return QINFO_SUCCESS on success, an error code otherwise.
  */
-int QInfo_set_l(QInfo info, QInfo_index index, long val);
+int QInfo_set_i64(QInfo info, QInfo_index index, int64_t val);
 
 /**
  * @brief Sets the float value stored at the index @p index in @p info.
