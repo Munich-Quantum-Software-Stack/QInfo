@@ -37,7 +37,9 @@ enum QINFO_STATUS {
  * @param err The return value.
  * @return 1 if the return value is a success, 0 otherwise.
  */
-inline int QInfo_is_Success(const int err) { return err == QINFO_SUCCESS; }
+static inline int QInfo_is_Success(const int err) {
+  return err == QINFO_SUCCESS;
+}
 
 /**
  * @brief Check if the return value is a warning (non-fatal).
@@ -45,7 +47,9 @@ inline int QInfo_is_Success(const int err) { return err == QINFO_SUCCESS; }
  * @param err The return value.
  * @return 1 if the return value is a warning, 0 otherwise.
  */
-inline int QInfo_is_Warning(const int err) { return err > QINFO_SUCCESS; }
+static inline int QInfo_is_Warning(const int err) {
+  return err > QINFO_SUCCESS;
+}
 
 /**
  * @brief Check if the return value is an error.
@@ -53,7 +57,7 @@ inline int QInfo_is_Warning(const int err) { return err > QINFO_SUCCESS; }
  * @param err The return value.
  * @return 1 if the return value is an error, 0 otherwise.
  */
-inline int QInfo_is_Error(const int err) { return err < QINFO_SUCCESS; }
+static inline int QInfo_is_Error(const int err) { return err < QINFO_SUCCESS; }
 
 /**
  * @brief Types for values stored in a QInfo object.
