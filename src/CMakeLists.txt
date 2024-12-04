@@ -20,16 +20,16 @@ if(QINFO_INSTALL)
       "${QINFO_CMAKE_CONFIG_DIR}/qinfo-targets.cmake")
 endif()
 
-if(NOT TARGET project_warnings)
+if(NOT TARGET qinfo_project_warnings)
   # Use the warnings specified in CompilerWarnings.cmake
-  add_library(project_warnings INTERFACE)
+  add_library(qinfo_project_warnings INTERFACE)
 
   # Standard compiler warnings
   include(${PROJECT_SOURCE_DIR}/cmake/CompilerWarnings.cmake)
-  set_project_warnings(project_warnings)
+  set_project_warnings(qinfo_project_warnings)
 
   # Add alias
-  add_library(qinfo::project_warnings ALIAS project_warnings)
+  add_library(qinfo::project_warnings ALIAS qinfo_project_warnings)
 endif()
 
 if(NOT TARGET qinfo)
@@ -100,7 +100,7 @@ if(QINFO_INSTALL)
           DESTINATION ${QINFO_CONFIG_INSTALL_DIR})
 
   install(
-    TARGETS qinfo project_warnings
+    TARGETS qinfo qinfo_project_warnings
     EXPORT ${QINFO_TARGETS_EXPORT_NAME}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT QInfo_Runtime
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
