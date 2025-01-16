@@ -23,6 +23,7 @@ jobs:
     uses: cda-tum/mqt-workflows/.github/workflows/reusable-cpp-ci.yml@v1.5
     permissions:
       id-token: write
+      contents: read
 
   cpp-linter:
     name: 🇨‌ Lint
